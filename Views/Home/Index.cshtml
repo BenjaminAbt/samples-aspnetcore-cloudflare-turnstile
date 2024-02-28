@@ -1,0 +1,43 @@
+﻿@inject Microsoft.Extensions.Options.IOptions<CloudflareTurnstileSettings> CFTOptions
+@{
+    var turnstileConfig = CFTOptions.Value;
+
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://schwabencode.com">.NET and ASP.NET Core with Ben</a>.</p>
+</div>
+
+<!-- Cloudflare Turnstile Setup -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
+
+<form method="post">
+    @(Html.AntiForgeryToken())
+
+    <input type="text" placeholder="Sample Text" name="@(nameof(PostSampleSubmitModel.SampleInput))" />
+
+    <div class="cf-turnstile" data-sitekey="@(turnstileConfig.SiteKey)" data-callback="javascriptCallback"></div>
+
+    <button type="submit">Submit</button>
+</form>
+
+@if (ViewBag.Result is CloudflareTurnstileVerifyResult result)
+{
+    <hr />
+    if(result.Success)
+    {
+        <p>Successfully verified</p>
+    }
+    else
+    {
+        <p>Error while validation</p>
+        <ul>
+            @foreach(var error in result.ErrorCodes)
+            {
+                <li>@(error)</li>
+            }
+        </ul>
+    }
+}
