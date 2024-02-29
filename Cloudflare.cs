@@ -32,7 +32,7 @@ public class CloudflareTurnstileProvider(IOptions<CloudflareTurnstileSettings> t
     public async Task<CloudflareTurnstileVerifyResult> Verify(string token, string? idempotencyKey = null,
         IPAddress? userIpAddress = null, CancellationToken ct = default)
     {
-        CloudFlareTurnstileVerifyRequestModel requestModel = new(_turnstileSettings.SecretKey, token, userIpAddress?.ToString(), idempotencyKey);
+        CloudflareTurnstileVerifyRequestModel requestModel = new(_turnstileSettings.SecretKey, token, userIpAddress?.ToString(), idempotencyKey);
 
         CloudflareTurnstileVerifyResult result = await client
                 .Verify(requestModel, ct)
@@ -42,7 +42,7 @@ public class CloudflareTurnstileProvider(IOptions<CloudflareTurnstileSettings> t
     }
 }
 
-public record class CloudFlareTurnstileVerifyRequestModel(
+public record class CloudflareTurnstileVerifyRequestModel(
     // https://developers.cloudflare.com/turnstile/get-started/server-side-validation
     [property: JsonPropertyName("secret")] string SecretKey,
     [property: JsonPropertyName("response")] string Token,
@@ -53,7 +53,7 @@ public interface ICloudflareTurnstileClient
 {
     [Post("/siteverify")]
     [Headers("Content-Type: application/json")]
-    public Task<CloudflareTurnstileVerifyResult> Verify(CloudFlareTurnstileVerifyRequestModel requestModel,
+    public Task<CloudflareTurnstileVerifyResult> Verify(CloudflareTurnstileVerifyRequestModel requestModel,
           CancellationToken ct);
 }
 
@@ -65,9 +65,9 @@ public record class CloudflareTurnstileVerifyResult(
     [property: JsonPropertyName("hostname")] string Hostname
     );
 
-public static class CloudFlareTurnstileRegistration
+public static class CloudflareTurnstileRegistration
 {
-    public static IServiceCollection AddCloudFlareTurnstile(
+    public static IServiceCollection AddCloudflareTurnstile(
         this IServiceCollection services, IConfigurationSection configurationSection)
     {
         // configure

@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Add Cloudflare Turnstile
-builder.Services.AddCloudFlareTurnstile(builder.Configuration.GetRequiredSection("CloudflareTurnstile"));
+builder.Services.AddCloudflareTurnstile(builder.Configuration.GetRequiredSection("CloudflareTurnstile"));
 
 var app = builder.Build();
 
